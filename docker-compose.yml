@@ -6,7 +6,7 @@ services:
     image: mcr.microsoft.com/mssql/server:2022-latest # Use a versão mais recente ou específica
     container_name: seguro-sql-server
     environment:
-      SA_PASSWORD: "YourStrong@Password" # Altere para uma senha forte!
+      SA_PASSWORD: "admsql9612" # Altere para uma senha forte!
       ACCEPT_EULA: "Y"
     ports:
       - "1432:1433" # Mapeia a porta do container para a porta do host

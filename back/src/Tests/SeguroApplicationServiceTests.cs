@@ -140,17 +140,64 @@ public class SeguroApplicationServiceTests
 
         _mockSeguroRepository.GetByIdWithDetailsAsync(seguroId).Returns(seguroOriginal);
 
-        _mockSeguroRepository.UpdateAsync(Arg.Any<Seguro>()).Returns(Task.CompletedTask);
+        // Crie uma lista para capturar os argumentos passados para UpdateAsync
+        var capturedSeguros = new List<Seguro>();
+
+        // Configure o mock para capturar qualquer argumento passado para UpdateAsync
+        // e então retorne um Task.CompletedTask
+        _mockSeguroRepository.UpdateAsync(Arg.Do<Seguro>(s => capturedSeguros.Add(s)))
+                             .Returns(Task.CompletedTask);
 
         // Act
         await _sut.AtualizarValorVeiculoDoSeguroAsync(seguroId, novoValor);
 
-        await _mockSeguroRepository.Received(1).UpdateAsync(Arg.Is<Seguro>(s =>
-            s.Id == seguroId && s.Veiculo.Valor == novoValor));
+        // Assert
+        // Primeiro, verifique se UpdateAsync foi chamado pelo menos uma vez
+        await _mockSeguroRepository.Received(1).UpdateAsync(Arg.Any<Seguro>());
 
+        // Em seguida, verifique se um objeto foi capturado
+        capturedSeguros.Should().HaveCount(1, "porque UpdateAsync deveria ter sido chamado uma vez e capturado.");
+
+        // Pegue o objeto capturado
+        var capturedSeguro = capturedSeguros.First();
+
+        // Agora, assert sobre o objeto CAPTURADO
+        capturedSeguro.Should().NotBeNull(); // Esta linha deve passar agora
+        capturedSeguro.Id.Should().Be(seguroId);
+        capturedSeguro.Veiculo.Should().NotBeNull();
+        capturedSeguro.Veiculo.Valor.Should().Be(novoValor);
+        capturedSeguro.PremioComercial.Should().BeGreaterThan(0);
+
+        // Opcionalmente, você ainda pode verificar o estado do objeto original
+        // para confirmar que a instância de domínio foi corretamente modificada
         seguroOriginal.Veiculo.Valor.Should().Be(novoValor);
         seguroOriginal.PremioComercial.Should().BeGreaterThan(0);
     }
+
+    //[Test]
+    //public async Task AtualizarValorVeiculoDoSeguroAsync_ComDadosValidos_DeveChamarUpdate()
+    //{
+    //    // Arrange
+    //    var seguroId = Guid.NewGuid();
+    //    var novoValor = 75000m;
+
+    //    var veiculoOriginal = Veiculo.CriarVeiculo(50000m, "Carro Original");
+    //    var seguradoOriginal = Segurado.CriarSegurado("Nome Segurado", "11111111111", 40);
+    //    var seguroOriginal = Seguro.CriarSeguro(veiculoOriginal, seguradoOriginal);
+
+    //    _mockSeguroRepository.GetByIdWithDetailsAsync(seguroId).Returns(seguroOriginal);
+
+    //    _mockSeguroRepository.UpdateAsync(Arg.Any<Seguro>()).Returns(Task.CompletedTask);
+
+    //    // Act
+    //    await _sut.AtualizarValorVeiculoDoSeguroAsync(seguroId, novoValor);
+
+    //    await _mockSeguroRepository.Received(1).UpdateAsync(Arg.Is<Seguro>(s =>
+    //        s.Id == seguroId && s.Veiculo.Valor == novoValor));
+
+    //    seguroOriginal.Veiculo.Valor.Should().Be(novoValor);
+    //    seguroOriginal.PremioComercial.Should().BeGreaterThan(0);
+    //}
 
     //[Test]
     //public async Task AtualizarValorVeiculoDoSeguroAsync_SeguroNaoEncontrado_DeveLancarKeyNotFoundException()
