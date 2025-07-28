@@ -1,0 +1,16 @@
+D:\DevStudio2025\DESAFIO_TECNICO\EXTRACTTA\dev\src\Seguro.Tests\bin\Debug\net9.0\.msCoverageSourceRootsMapping_Seguro.Tests
+D:\DevStudio2025\DESAFIO_TECNICO\EXTRACTTA\dev\src\Seguro.Tests\bin\Debug\net9.0\CoverletSourceRootsMapping_Seguro.Tests
+D:\DevStudio2025\DESAFIO_TECNICO\EXTRACTTA\dev\src\Seguro.Tests\obj\Debug\net9.0\Seguro.Tests.csproj.AssemblyReference.cache
+D:\DevStudio2025\DESAFIO_TECNICO\EXTRACTTA\dev\src\Seguro.Tests\obj\Debug\net9.0\MvcTestingAppManifest.json
+D:\DevStudio2025\DESAFIO_TECNICO\EXTRACTTA\dev\src\Seguro.Tests\obj\Debug\net9.0\Seguro.Tests.GeneratedMSBuildEditorConfig.editorconfig
+D:\DevStudio2025\DESAFIO_TECNICO\EXTRACTTA\dev\src\Seguro.Tests\obj\Debug\net9.0\Seguro.Tests.AssemblyInfoInputs.cache
+D:\DevStudio2025\DESAFIO_TECNICO\EXTRACTTA\dev\src\Seguro.Tests\obj\Debug\net9.0\Seguro.Tests.AssemblyInfo.cs
+D:\DevStudio2025\DESAFIO_TECNICO\EXTRACTTA\dev\src\Seguro.Tests\obj\Debug\net9.0\Seguro.Tests.csproj.CoreCompileInputs.cache
+D:\DevStudio2025\DESAFIO_TECNICO\EXTRACTTA\dev\back\src\Seguro.Tests\bin\Debug\net9.0\.msCoverageSourceRootsMapping_Seguro.Tests
+D:\DevStudio2025\DESAFIO_TECNICO\EXTRACTTA\dev\back\src\Seguro.Tests\bin\Debug\net9.0\CoverletSourceRootsMapping_Seguro.Tests
+D:\DevStudio2025\DESAFIO_TECNICO\EXTRACTTA\dev\back\src\Seguro.Tests\obj\Debug\net9.0\Seguro.Tests.csproj.AssemblyReference.cache
+D:\DevStudio2025\DESAFIO_TECNICO\EXTRACTTA\dev\back\src\Seguro.Tests\obj\Debug\net9.0\MvcTestingAppManifest.json
+D:\DevStudio2025\DESAFIO_TECNICO\EXTRACTTA\dev\back\src\Seguro.Tests\obj\Debug\net9.0\Seguro.Tests.GeneratedMSBuildEditorConfig.editorconfig
+D:\DevStudio2025\DESAFIO_TECNICO\EXTRACTTA\dev\back\src\Seguro.Tests\obj\Debug\net9.0\Seguro.Tests.AssemblyInfoInputs.cache
+D:\DevStudio2025\DESAFIO_TECNICO\EXTRACTTA\dev\back\src\Seguro.Tests\obj\Debug\net9.0\Seguro.Tests.AssemblyInfo.cs
+D:\DevStudio2025\DESAFIO_TECNICO\EXTRACTTA\dev\back\src\Seguro.Tests\obj\Debug\net9.0\Seguro.Tests.csproj.CoreCompileInputs.cache

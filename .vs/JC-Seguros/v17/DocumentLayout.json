@@ -1,0 +1,126 @@
+{
+  "Version": 1,
+  "WorkspaceRootPath": "D:\\DevStudio2025\\DESAFIO_TECNICO\\EXTRACTTA\\dev\\",
+  "Documents": [
+    {
+      "AbsoluteMoniker": "D:0:0:{22BF47D2-7816-22C2-6333-24573D9AE189}|src\\Seguro.Tests\\Seguro.Tests.csproj|d:\\devstudio2025\\desafio_tecnico\\extractta\\dev\\src\\seguro.tests\\domain\\segurotests.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{22BF47D2-7816-22C2-6333-24573D9AE189}|src\\Seguro.Tests\\Seguro.Tests.csproj|solutionrelative:src\\seguro.tests\\domain\\segurotests.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{87EDA1D2-4B5B-E524-38CE-D0BFCA5F4D6B}|src\\Domain\\Domain.csproj|d:\\devstudio2025\\desafio_tecnico\\extractta\\dev\\src\\domain\\entities\\seguro.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{87EDA1D2-4B5B-E524-38CE-D0BFCA5F4D6B}|src\\Domain\\Domain.csproj|solutionrelative:src\\domain\\entities\\seguro.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{87EDA1D2-4B5B-E524-38CE-D0BFCA5F4D6B}|src\\Domain\\Domain.csproj|d:\\devstudio2025\\desafio_tecnico\\extractta\\dev\\src\\domain\\entities\\veiculo.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{87EDA1D2-4B5B-E524-38CE-D0BFCA5F4D6B}|src\\Domain\\Domain.csproj|solutionrelative:src\\domain\\entities\\veiculo.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{87EDA1D2-4B5B-E524-38CE-D0BFCA5F4D6B}|src\\Domain\\Domain.csproj|d:\\devstudio2025\\desafio_tecnico\\extractta\\dev\\src\\domain\\entities\\segurado.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{87EDA1D2-4B5B-E524-38CE-D0BFCA5F4D6B}|src\\Domain\\Domain.csproj|solutionrelative:src\\domain\\entities\\segurado.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    }
+  ],
+  "DocumentGroupContainers": [
+    {
+      "Orientation": 0,
+      "VerticalTabListWidth": 256,
+      "DocumentGroups": [
+        {
+          "DockedWidth": 200,
+          "SelectedChildIndex": 0,
+          "Children": [
+            {
+              "$type": "Document",
+              "DocumentIndex": 0,
+              "Title": "SeguroTests.cs",
+              "DocumentMoniker": "D:\\DevStudio2025\\DESAFIO_TECNICO\\EXTRACTTA\\dev\\src\\Seguro.Tests\\Domain\\SeguroTests.cs",
+              "RelativeDocumentMoniker": "src\\Seguro.Tests\\Domain\\SeguroTests.cs",
+              "ToolTip": "D:\\DevStudio2025\\DESAFIO_TECNICO\\EXTRACTTA\\dev\\src\\Seguro.Tests\\Domain\\SeguroTests.cs",
+              "RelativeToolTip": "src\\Seguro.Tests\\Domain\\SeguroTests.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAA0AAABTAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-07-26T23:49:56.593Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 3,
+              "Title": "Segurado.cs",
+              "DocumentMoniker": "D:\\DevStudio2025\\DESAFIO_TECNICO\\EXTRACTTA\\dev\\src\\Domain\\Entities\\Segurado.cs",
+              "RelativeDocumentMoniker": "src\\Domain\\Entities\\Segurado.cs",
+              "ToolTip": "D:\\DevStudio2025\\DESAFIO_TECNICO\\EXTRACTTA\\dev\\src\\Domain\\Entities\\Segurado.cs",
+              "RelativeToolTip": "src\\Domain\\Entities\\Segurado.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAABAAAAAYAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-07-26T23:20:00.806Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 2,
+              "Title": "Veiculo.cs",
+              "DocumentMoniker": "D:\\DevStudio2025\\DESAFIO_TECNICO\\EXTRACTTA\\dev\\src\\Domain\\Entities\\Veiculo.cs",
+              "RelativeDocumentMoniker": "src\\Domain\\Entities\\Veiculo.cs",
+              "ToolTip": "D:\\DevStudio2025\\DESAFIO_TECNICO\\EXTRACTTA\\dev\\src\\Domain\\Entities\\Veiculo.cs",
+              "RelativeToolTip": "src\\Domain\\Entities\\Veiculo.cs",
+              "ViewState": "AgIAAAIAAAAAAAAAAAAxwAQAAAAuAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-07-26T23:19:48.034Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 1,
+              "Title": "Seguro.cs",
+              "DocumentMoniker": "D:\\DevStudio2025\\DESAFIO_TECNICO\\EXTRACTTA\\dev\\src\\Domain\\Entities\\Seguro.cs",
+              "RelativeDocumentMoniker": "src\\Domain\\Entities\\Seguro.cs",
+              "ToolTip": "D:\\DevStudio2025\\DESAFIO_TECNICO\\EXTRACTTA\\dev\\src\\Domain\\Entities\\Seguro.cs",
+              "RelativeToolTip": "src\\Domain\\Entities\\Seguro.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAIAAAAdAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-07-26T23:19:19.493Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Bookmark",
+              "Name": "ST:128:0:{1fc202d4-d401-403c-9834-5b218574bb67}"
+            },
+            {
+              "$type": "Bookmark",
+              "Name": "ST:129:0:{116d2292-e37d-41cd-a077-ebacac4c8cc4}"
+            },
+            {
+              "$type": "Bookmark",
+              "Name": "ST:131:0:{116d2292-e37d-41cd-a077-ebacac4c8cc4}"
+            }
+          ]
+        },
+        {
+          "DockedWidth": 200,
+          "SelectedChildIndex": -1,
+          "Children": [
+            {
+              "$type": "Bookmark",
+              "Name": "ST:129:0:{1fc202d4-d401-403c-9834-5b218574bb67}"
+            },
+            {
+              "$type": "Bookmark",
+              "Name": "ST:130:0:{1fc202d4-d401-403c-9834-5b218574bb67}"
+            },
+            {
+              "$type": "Bookmark",
+              "Name": "ST:132:0:{1fc202d4-d401-403c-9834-5b218574bb67}"
+            },
+            {
+              "$type": "Bookmark",
+              "Name": "ST:133:0:{1fc202d4-d401-403c-9834-5b218574bb67}"
+            },
+            {
+              "$type": "Bookmark",
+              "Name": "ST:134:0:{1fc202d4-d401-403c-9834-5b218574bb67}"
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}
