@@ -5,6 +5,7 @@ using Infrastructure.Services;
 using Microsoft.AspNetCore.Mvc;
 using System.Net;
 using SeguroResponseDto = Application.Dtos.SeguroResponseDto;
+using Application.Services;
 
 namespace API.Controllers;
 
@@ -12,9 +13,9 @@ namespace API.Controllers;
 [Route("api/[controller]")]
 public class SegurosController : ControllerBase
 {
-    private readonly SeguroApplicationService _seguroApplicationService;
+    private readonly ISeguroApplicationService _seguroApplicationService;
 
-    public SegurosController(SeguroApplicationService seguroApplicationService)
+    public SegurosController(ISeguroApplicationService seguroApplicationService)
     {
         _seguroApplicationService = seguroApplicationService;
     }
@@ -68,14 +69,28 @@ public class SegurosController : ControllerBase
             var seguro = await _seguroApplicationService.ObterSeguroPorIdAsync(id);
             return Ok(seguro);
         }
-        catch (KeyNotFoundException ex)
+        //catch (KeyNotFoundException ex)
+        //{
+        //    return NotFound(new { message = ex.Message });
+        //}
+        catch (DomainExceptionValidation ex)
         {
-            return NotFound(new { message = ex.Message });
+            // Se a mensagem for "não encontrado", retorna 404
+            if (ex.Message.Contains("não encontrado"))
+            {
+                return NotFound(new { message = ex.Message });
+            }
+            // Caso contrário, pode ser um BadRequest se a validação indicar um problema na requisição
+            return BadRequest(new { message = ex.Message, errors = ex.Errors });
         }
         catch (Exception ex)
         {
-            return StatusCode(500, new { message = "Ocorreu um erro interno ao processar sua requisição." });
+            return StatusCode((int)HttpStatusCode.InternalServerError, new { message = "Ocorreu um erro interno ao processar sua requisição." });
         }
+        //catch (Exception ex)
+        //{
+        //    return StatusCode(500, new { message = "Ocorreu um erro interno ao processar sua requisição." });
+        //}
     }
 
     [HttpGet("relatorio/medias")]

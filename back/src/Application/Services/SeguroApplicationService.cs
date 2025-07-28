@@ -1,10 +1,12 @@
 ﻿using Application.Dtos;
+using Application.Services;
+using Application.Validators;
 using Domain.Entities;
 using Domain.Interfaces;
 
 namespace Infrastructure.Services;
 
-public class SeguroApplicationService
+public class SeguroApplicationService : ISeguroApplicationService
 {
     private readonly ISeguroRepository _seguroRepository;
 
@@ -52,7 +54,8 @@ public class SeguroApplicationService
         var seguro = await _seguroRepository.GetByIdWithDetailsAsync(id);
         if (seguro == null)
         {
-            return null;
+            DomainExceptionValidation.When(true, $"Seguro com Id {id} não encontrado.");
+            //return null;
         }
 
         return new SeguroResponseDto
@@ -130,5 +133,20 @@ public class SeguroApplicationService
                 Idade = seguro.Segurado.Idade
             }
         }).ToList();
+    }
+
+    public async Task AtualizarValorVeiculoDoSeguroAsync(Guid seguroId, decimal novoValorVeiculo)
+    {
+        var seguro = await _seguroRepository.GetByIdWithDetailsAsync(seguroId);
+        if (seguro == null)
+        {
+            //throw new KeyNotFoundException($"Seguro com Id {seguroId} não encontrado.");
+            DomainExceptionValidation.When(true, $"Seguro com Id {seguroId} não encontrado.");
+        }
+
+        // A lógica de negócio para atualizar e recalcular está na entidade de domínio
+        seguro.AtualizarValorVeiculo(novoValorVeiculo);
+
+        await _seguroRepository.UpdateAsync(seguro);
     }
 }

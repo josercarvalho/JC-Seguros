@@ -1,0 +1,56 @@
+version: '3.8'
+
+services:
+  # Serviço de Banco de Dados SQL Server
+  db:
+    image: mcr.microsoft.com/mssql/server:2022-latest # Use a versão mais recente ou específica
+    container_name: seguro-sql-server
+    environment:
+      SA_PASSWORD: "YourStrong@Password" # Altere para uma senha forte!
+      ACCEPT_EULA: "Y"
+    ports:
+      - "1432:1433" # Mapeia a porta do container para a porta do host
+    volumes:
+      - sqlserver_data:/var/opt/mssql # Persiste os dados do SQL Server
+    networks:
+      - seguro-network
+
+  # Serviço da API .NET
+  api:
+    build:
+      context: . # O contexto é a pasta raiz onde docker-compose.yml está
+      dockerfile: src/Api/Dockerfile # Caminho para o Dockerfile da API
+    container_name: seguro-api
+    environment:
+      # String de Conexão para o SQL Server
+      # Use o nome do serviço 'db' como hostname dentro da rede Docker
+      ConnectionStrings__DefaultConnection: "Server=db;Database=SeguroDb;User ID=sa;Password=admsql9612;TrustServerCertificate=True"
+      ASPNETCORE_URLS: "http://+:80" # A API irá escutar na porta 80 dentro do container
+    ports:
+      - "5000:80" # Mapeia a porta 80 do container para a porta 5000 do host
+    depends_on:
+      - db # Garante que o DB inicie antes da API
+    networks:
+      - seguro-network
+
+  # Serviço do Front-end Angular
+  frontend:
+    build:
+      context: ./front/jc-seguro # O contexto é a pasta do projeto Angular
+      dockerfile: Dockerfile # O Dockerfile está na raiz da pasta do front-end
+    container_name: seguro-frontend
+    ports:
+      - "4200:80" # Mapeia a porta 80 do container (Nginx) para a porta 4200 do host
+    depends_on:
+      - api # O front-end depende da API estar rodando
+    networks:
+      - seguro-network
+
+# Definição de Volumes para persistência de dados
+volumes:
+  sqlserver_data:
+
+# Definição da Rede para comunicação entre os serviços
+networks:
+  seguro-network:
+    driver: bridge

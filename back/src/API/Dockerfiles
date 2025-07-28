@@ -1,0 +1,30 @@
+# Use a imagem base do SDK para construir a aplicação
+FROM mcr.microsoft.com/dotnet/sdk:8.0 AS build
+WORKDIR /src
+
+# Copia o arquivo de solução e restaura os pacotes Nuget
+# Isso permite que o Docker utilize o cache de camadas para restauração de pacotes
+COPY JC-Seguros.sln .
+COPY Api/*.csproj Api/
+COPY Application/*.csproj Application/
+COPY Domain/*.csproj Domain/
+COPY Infrastructure/*.csproj Infrastructure/
+RUN dotnet restore Seguro.sln
+
+# Copia todo o código-fonte
+COPY . .
+
+# Publica a aplicação
+WORKDIR /src/Api
+RUN dotnet publish "Api.csproj" -c Release -o /app/publish /p:UseAppHost=false
+
+# Use a imagem de runtime para rodar a aplicação (menor tamanho)
+FROM mcr.microsoft.com/dotnet/aspnet:8.0 AS final
+WORKDIR /app
+COPY --from=build /app/publish .
+
+# Exponha a porta que a API usará (geralmente 80 para HTTP em contêineres)
+EXPOSE 80
+
+# Comando para iniciar a aplicação
+ENTRYPOINT ["dotnet", "Api.dll"]

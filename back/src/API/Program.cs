@@ -29,9 +29,9 @@ builder.Services.AddScoped<IVeiculoRepository, VeiculoRepository>();
 builder.Services.AddScoped<ISeguradoRepository, SeguradoRepository>(); 
 
 
-builder.Services.AddScoped<SeguroApplicationService>();
-builder.Services.AddScoped<VeiculoApplicationService>(); 
-builder.Services.AddScoped<SeguradoApplicationService>(); 
+builder.Services.AddScoped<ISeguroApplicationService, SeguroApplicationService>();
+builder.Services.AddScoped<VeiculoApplicationService>();
+builder.Services.AddScoped<SeguradoApplicationService>();
 
 builder.Services.AddHttpClient<ISeguradoService, SeguradoApiService>(client =>
 {

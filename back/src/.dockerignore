@@ -1,0 +1,29 @@
+# Arquivos .NET
+bin/
+obj/
+publish/
+.vs/
+.vscode/
+
+# Arquivos Angular
+front/jc-seguro/node_modules/
+front/jc-seguro/dist/
+front/jc-seguro/.angular/
+
+# Outros
+*.user
+*.suo
+*.psess
+*.vssscc
+*.buildscc
+*.log
+[Dd]ebug/
+[Rr]elease/
+
+# Git
+.git/
+.gitignore
+
+# docker
+Dockerfile*
+docker-compose*.yml
