@@ -139,18 +139,17 @@ public class SeguroApplicationServiceTests
         var seguroOriginal = Seguro.CriarSeguro(veiculoOriginal, seguradoOriginal);
 
         _mockSeguroRepository.GetByIdWithDetailsAsync(seguroId).Returns(seguroOriginal);
+
         _mockSeguroRepository.UpdateAsync(Arg.Any<Seguro>()).Returns(Task.CompletedTask);
 
         // Act
         await _sut.AtualizarValorVeiculoDoSeguroAsync(seguroId, novoValor);
 
-        // Assert
-        // Verifique se o método UpdateAsync foi chamado
         await _mockSeguroRepository.Received(1).UpdateAsync(Arg.Is<Seguro>(s =>
             s.Id == seguroId && s.Veiculo.Valor == novoValor));
 
         seguroOriginal.Veiculo.Valor.Should().Be(novoValor);
-        seguroOriginal.PremioComercial.Should().BeGreaterThan(0); // Deve ser recalculado
+        seguroOriginal.PremioComercial.Should().BeGreaterThan(0);
     }
 
     //[Test]
