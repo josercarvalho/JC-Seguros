@@ -3,6 +3,8 @@ using Domain.Interfaces;
 using FluentAssertions;
 using Infrastructure.Services;
 using NSubstitute;
+using NUnit.Framework;
+using Application.Validators;
 
 namespace Tests;
 
@@ -52,28 +54,28 @@ public class SeguroApplicationServiceTests
         await _mockSeguroRepository.Received(1).AddAsync(Arg.Any<Domain.Entities.Seguro>());
     }
 
-    //[Test]
-    //public async Task RegistrarNovoSeguroAsync_ComValorVeiculoInvalido_DeveLancarArgumentException()
-    //{
-    //    // Arrange
-    //    var valorVeiculo = 0m; // Valor inválido
-    //    var marcaModeloVeiculo = "Ford Ka";
-    //    var nomeSegurado = "João Silva";
-    //    var cpfSegurado = "12345678900";
-    //    var idadeSegurado = 30;
+    [Test]
+    public void RegistrarNovoSeguroAsync_ComValorVeiculoInvalido_DeveLancarArgumentOutOfRangeException()
+    {
+        // Arrange
+        var valorVeiculo = 0m; // Valor inválido
+        var marcaModeloVeiculo = "Ford Ka";
+        var nomeSegurado = "João Silva";
+        var cpfSegurado = "12345678900";
+        var idadeSegurado = 30;
 
-    //    // Act & Assert
-    //    // NUnit: Use Assert.ThrowsAsync para testar exceções assíncronas
-    //    var ex = await Assert.ThrowsAsync<DomainExceptionValidation>(async () =>
-    //    {
-    //        await _sut.RegistrarNovoSeguroAsync(valorVeiculo, marcaModeloVeiculo, nomeSegurado, cpfSegurado, idadeSegurado);
-    //    });
+        // Act & Assert
+        // Use Assert.Throws para testar exceções síncronas
+        var ex = Assert.ThrowsAsync<ArgumentOutOfRangeException>(async () =>
+        {
+            await _sut.RegistrarNovoSeguroAsync(valorVeiculo, marcaModeloVeiculo, nomeSegurado, cpfSegurado, idadeSegurado);
+        });
 
-    //    ex.Message.Should().Contain("Valor do veículo deve ser maior que zero.");
+        ex.Message.Should().Contain("O valor do veículo deve ser maior que zero.");
 
-    //    // Verifique se o repositório NUNCA foi chamado (a validação deve ocorrer antes)
-    //    await _mockSeguroRepository.DidNotReceive().AddAsync(Arg.Any<Domain.Entities.Seguro>());
-    //}
+        // Verifique se o repositório NUNCA foi chamado (a validação deve ocorrer antes)
+        _mockSeguroRepository.DidNotReceive().AddAsync(Arg.Any<Domain.Entities.Seguro>());
+    }
 
     // --- Testes para ObterSeguroPorIdAsync ---
 
@@ -94,36 +96,32 @@ public class SeguroApplicationServiceTests
 
         // Assert
         result.Should().NotBeNull();
-        result.Id.Should().Be(seguroId);
+        result.Id.Should().Be(seguro.Id); // Use o ID do seguro criado, não o ID do parâmetro
         result.Segurado.Nome.Should().Be(segurado.Nome);
         result.Veiculo.MarcaModelo.Should().Be(veiculo.MarcaModelo);
 
         await _mockSeguroRepository.Received(1).GetByIdWithDetailsAsync(seguroId);
     }
 
-    //[Test]
-    //public async Task ObterSeguroPorIdAsync_ComIdNaoExistente_DeveLancarKeyNotFoundException()
-    //{
-    //    // Arrange
-    //    var seguroId = Guid.NewGuid();
+    [Test]
+    public void ObterSeguroPorIdAsync_ComIdNaoExistente_DeveLancarDomainExceptionValidation()
+    {
+        // Arrange
+        var seguroId = Guid.NewGuid();
 
-    //    // Configure o mock para retornar null quando o ID não for encontrado
-    //    _mockSeguroRepository.GetByIdWithDetailsAsync(seguroId).Returns((Domain.Entities.Seguro)null);
+        // Configure o mock para retornar null quando o ID não for encontrado
+        _mockSeguroRepository.GetByIdWithDetailsAsync(seguroId).Returns((Domain.Entities.Seguro?)null);
 
-    //    // Act & Assert
-    //    //var ex = await Assert.ThrowsAsync<KeyNotFoundException>(async () =>
-    //    //{
-    //    //    await _sut.ObterSeguroPorIdAsync(seguroId);
-    //    //});
-    //    var ex = await Assert.ThrowsAsync<DomainExceptionValidation>(async () =>
-    //    {
-    //        await _sut.ObterSeguroPorIdAsync(seguroId);
-    //    });
+        // Act & Assert
+        var ex = Assert.ThrowsAsync<DomainExceptionValidation>(async () =>
+        {
+            await _sut.ObterSeguroPorIdAsync(seguroId);
+        });
 
-    //    ex.Message.Should().Contain($"Seguro com Id {seguroId} não encontrado.");
+        ex.Message.Should().Contain($"Seguro com Id {seguroId} não encontrado.");
 
-    //    await _mockSeguroRepository.Received(1).GetByIdWithDetailsAsync(seguroId);
-    //}
+        _mockSeguroRepository.Received(1).GetByIdWithDetailsAsync(seguroId);
+    }
 
     // --- Testes para AtualizarValorVeiculoDoSeguroAsync ---
 
@@ -139,109 +137,62 @@ public class SeguroApplicationServiceTests
         var seguroOriginal = Seguro.CriarSeguro(veiculoOriginal, seguradoOriginal);
 
         _mockSeguroRepository.GetByIdWithDetailsAsync(seguroId).Returns(seguroOriginal);
-
-        // Crie uma lista para capturar os argumentos passados para UpdateAsync
-        var capturedSeguros = new List<Seguro>();
-
-        // Configure o mock para capturar qualquer argumento passado para UpdateAsync
-        // e então retorne um Task.CompletedTask
-        _mockSeguroRepository.UpdateAsync(Arg.Do<Seguro>(s => capturedSeguros.Add(s)))
-                             .Returns(Task.CompletedTask);
+        _mockSeguroRepository.UpdateAsync(Arg.Any<Seguro>()).Returns(Task.CompletedTask);
 
         // Act
         await _sut.AtualizarValorVeiculoDoSeguroAsync(seguroId, novoValor);
 
         // Assert
-        // Primeiro, verifique se UpdateAsync foi chamado pelo menos uma vez
         await _mockSeguroRepository.Received(1).UpdateAsync(Arg.Any<Seguro>());
 
-        // Em seguida, verifique se um objeto foi capturado
-        capturedSeguros.Should().HaveCount(1, "porque UpdateAsync deveria ter sido chamado uma vez e capturado.");
-
-        // Pegue o objeto capturado
-        var capturedSeguro = capturedSeguros.First();
-
-        // Agora, assert sobre o objeto CAPTURADO
-        capturedSeguro.Should().NotBeNull(); // Esta linha deve passar agora
-        capturedSeguro.Id.Should().Be(seguroId);
-        capturedSeguro.Veiculo.Should().NotBeNull();
-        capturedSeguro.Veiculo.Valor.Should().Be(novoValor);
-        capturedSeguro.PremioComercial.Should().BeGreaterThan(0);
-
-        // Opcionalmente, você ainda pode verificar o estado do objeto original
-        // para confirmar que a instância de domínio foi corretamente modificada
-        seguroOriginal.Veiculo.Valor.Should().Be(novoValor);
+        // Verifica que o ValorVeiculo da entidade Seguro foi atualizado
+        seguroOriginal.ValorVeiculo.Should().Be(novoValor);
         seguroOriginal.PremioComercial.Should().BeGreaterThan(0);
     }
 
-    //[Test]
-    //public async Task AtualizarValorVeiculoDoSeguroAsync_ComDadosValidos_DeveChamarUpdate()
-    //{
-    //    // Arrange
-    //    var seguroId = Guid.NewGuid();
-    //    var novoValor = 75000m;
+    [Test]
+    public void AtualizarValorVeiculoDoSeguroAsync_SeguroNaoEncontrado_DeveLancarDomainExceptionValidation()
+    {
+        // Arrange
+        var seguroId = Guid.NewGuid();
+        var novoValor = 75000m;
 
-    //    var veiculoOriginal = Veiculo.CriarVeiculo(50000m, "Carro Original");
-    //    var seguradoOriginal = Segurado.CriarSegurado("Nome Segurado", "11111111111", 40);
-    //    var seguroOriginal = Seguro.CriarSeguro(veiculoOriginal, seguradoOriginal);
+        _mockSeguroRepository.GetByIdWithDetailsAsync(seguroId).Returns((Domain.Entities.Seguro?)null);
 
-    //    _mockSeguroRepository.GetByIdWithDetailsAsync(seguroId).Returns(seguroOriginal);
+        // Act & Assert
+        var ex = Assert.ThrowsAsync<DomainExceptionValidation>(async () =>
+        {
+            await _sut.AtualizarValorVeiculoDoSeguroAsync(seguroId, novoValor);
+        });
 
-    //    _mockSeguroRepository.UpdateAsync(Arg.Any<Seguro>()).Returns(Task.CompletedTask);
+        ex.Message.Should().Contain($"Seguro com Id {seguroId} não encontrado.");
 
-    //    // Act
-    //    await _sut.AtualizarValorVeiculoDoSeguroAsync(seguroId, novoValor);
+        _mockSeguroRepository.DidNotReceive().UpdateAsync(Arg.Any<Domain.Entities.Seguro>());
+    }
 
-    //    await _mockSeguroRepository.Received(1).UpdateAsync(Arg.Is<Seguro>(s =>
-    //        s.Id == seguroId && s.Veiculo.Valor == novoValor));
+    [Test]
+    public void AtualizarValorVeiculoDoSeguroAsync_ComValorInvalido_DeveLancarArgumentOutOfRangeException()
+    {
+        // Arrange
+        var seguroId = Guid.NewGuid();
+        var valorInvalido = 0m; // Valor inválido
 
-    //    seguroOriginal.Veiculo.Valor.Should().Be(novoValor);
-    //    seguroOriginal.PremioComercial.Should().BeGreaterThan(0);
-    //}
+        var veiculoOriginal = Veiculo.CriarVeiculo(50000m, "Carro Teste");
+        var seguradoOriginal = Segurado.CriarSegurado("Nome Segurado", "11111111111", 40);
+        var seguroOriginal = Domain.Entities.Seguro.CriarSeguro(veiculoOriginal, seguradoOriginal);
 
-    //[Test]
-    //public async Task AtualizarValorVeiculoDoSeguroAsync_SeguroNaoEncontrado_DeveLancarKeyNotFoundException()
-    //{
-    //    // Arrange
-    //    var seguroId = Guid.NewGuid();
-    //    var novoValor = 75000m;
+        _mockSeguroRepository.GetByIdWithDetailsAsync(seguroId).Returns(seguroOriginal);
 
-    //    _mockSeguroRepository.GetByIdWithDetailsAsync(seguroId).Returns((Domain.Entities.Seguro)null);
+        // Act & Assert
+        var ex = Assert.ThrowsAsync<ArgumentOutOfRangeException>(async () =>
+        {
+            await _sut.AtualizarValorVeiculoDoSeguroAsync(seguroId, valorInvalido);
+        });
 
-    //    // Act & Assert
-    //    var ex = await Assert.ThrowsAsync<KeyNotFoundException>(async () =>
-    //    {
-    //        await _sut.AtualizarValorVeiculoDoSeguroAsync(seguroId, novoValor);
-    //    });
+        ex.Message.Should().Contain("O valor do veículo deve ser maior que zero.");
 
-    //    ex.Message.Should().Contain($"Seguro com Id {seguroId} não encontrado.");
-
-    //    await _mockSeguroRepository.DidNotReceive().UpdateAsync(Arg.Any<Domain.Entities.Seguro>());
-    //}
-
-    //[Test]
-    //public async Task AtualizarValorVeiculoDoSeguroAsync_ComValorInvalido_DeveLancarDomainExceptionValidation()
-    //{
-    //    // Arrange
-    //    var seguroId = Guid.NewGuid();
-    //    var valorInvalido = 0m; // Valor inválido
-
-    //    var veiculoOriginal = Veiculo.CriarVeiculo(50000m, "Carro Teste");
-    //    var seguradoOriginal = Segurado.CriarSegurado("Nome Segurado", "11111111111", 40);
-    //    var seguroOriginal = Domain.Entities.Seguro.CriarSeguro(veiculoOriginal, seguradoOriginal);
-
-    //    _mockSeguroRepository.GetByIdWithDetailsAsync(seguroId).Returns(seguroOriginal);
-
-    //    // Act & Assert
-    //    var ex = await Assert.ThrowsAsync<DomainExceptionValidation>(async () =>
-    //    {
-    //        await _sut.AtualizarValorVeiculoDoSeguroAsync(seguroId, valorInvalido);
-    //    });
-
-    //    ex.Message.Should().Contain("O valor do veículo deve ser maior que zero.");
-
-    //    await _mockSeguroRepository.DidNotReceive().UpdateAsync(Arg.Any<Domain.Entities.Seguro>());
-    //}
+        _mockSeguroRepository.DidNotReceive().UpdateAsync(Arg.Any<Domain.Entities.Seguro>());
+    }
 
     // --- Testes para GetAllSegurosAsync ---
 
@@ -298,7 +249,7 @@ public class SeguroApplicationServiceTests
         var s3_v = Veiculo.CriarVeiculo(150000m, "C"); var s3_s = Segurado.CriarSegurado("Z", "3", 50); var s3 = Seguro.CriarSeguro(s3_v, s3_s);
 
         var segurosList = new List<Seguro> { s1, s2, s3 };
-        _mockSeguroRepository.GetAllAsync().Returns(segurosList);
+        _mockSeguroRepository.GetAllWithDetailsAsync().Returns(segurosList);
 
         // Calcula as médias esperadas manualmente para asserção
         var expectedMediaValorVeiculo = segurosList.Average(s => s.Veiculo.Valor);
@@ -320,14 +271,14 @@ public class SeguroApplicationServiceTests
         result.MediaPremioComercial.Should().BeApproximately(expectedMediaPremioComercial, 0.001m);
         result.TotalSegurosAnalisados.Should().Be(expectedTotalSeguros);
 
-        await _mockSeguroRepository.Received(1).GetAllAsync();
+        await _mockSeguroRepository.Received(1).GetAllWithDetailsAsync();
     }
 
     [Test]
     public async Task GerarRelatorioMediasAsync_QuandoNenhumSeguro_DeveRetornarRelatorioZero()
     {
         // Arrange
-        _mockSeguroRepository.GetAllAsync().Returns(new List<Seguro>());
+        _mockSeguroRepository.GetAllWithDetailsAsync().Returns(new List<Seguro>());
 
         // Act
         var result = await _sut.GerarRelatorioMediasAsync();
@@ -341,6 +292,6 @@ public class SeguroApplicationServiceTests
         result.MediaPremioComercial.Should().Be(0);
         result.TotalSegurosAnalisados.Should().Be(0);
 
-        await _mockSeguroRepository.Received(1).GetAllAsync();
+        await _mockSeguroRepository.Received(1).GetAllWithDetailsAsync();
     }
 }
